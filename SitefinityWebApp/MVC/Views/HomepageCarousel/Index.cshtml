@@ -1,0 +1,43 @@
+﻿@model List<SitefinityWebApp.Mvc.Models.HomepageCarouselModel>
+
+@using Telerik.Sitefinity.Frontend.Mvc.Helpers;
+
+<script>
+    $(function () {
+        $('#carousel').slick({
+            fade: true,
+            cssEase: 'linear',
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 5000,
+            mobileFirst: true,
+            dots: true
+        });
+    });
+</script>
+
+<div class="homepage-carousel-wrapper" id="carousel">
+    @foreach (var item in Model)
+    {
+        if (!item.ImageUrl.IsNullOrEmpty())
+        {
+            var target = item.PageLink.ToLower().Contains("http") ? "_blank" : string.Empty;
+            <div class="item" title="@item.AltText">
+                <a class="learn-more" href="@item.PageLink" target="@target" rel="noreferrer noopener">
+                    <img src="@item.ImageUrl" alt="@item.AltText" />
+                    @if (!item.ItemTitle.IsNullOrEmpty() || !item.ItemSummary.IsNullOrEmpty())
+                    {
+                        <div class="copy">
+                            <h1>@item.ItemTitle</h1>
+                            <p>@Html.Raw(item.ItemSummary)</p>
+                        </div>
+                    }
+                </a>
+            </div>
+        }
+    }
+</div>
+
+@Html.StyleSheet("/Scripts/slick-1.8.1/slick/slick.min.css")
+@Html.StyleSheet("/Scripts/slick-1.8.1/slick/slick-theme.min.css")
+@Html.Script("/Scripts/slick-1.8.1/slick/slick.min.js")
